@@ -1,0 +1,6 @@
+[18-May-2023 19:18:47 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'forge'@'localhost' (using password: NO) in /home/customer/www/olistica.app/public_html/olisystem/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:70
+Stack trace:
+#0 /home/customer/www/olistica.app/public_html/olisystem/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(70): PDO->__construct('mysql:host=127....', 'forge', '', Array)
+#1 /home/customer/www/olistica.app/public_html/olisystem/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(46): Illuminate\Database\Connectors\Connector->createPdoConnection('mysql:host=127....', 'forge', '', Array)
+#2 /home/customer/www/olistica.app/public_html/olisystem/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\Database\Connectors\Connector->createConnection('mysql:host=127....', Array, Array)
+#3 /home/customer/www/olistica.app/public_html/olisystem/vendor/laravel/framework/src/Illuminate in /home/customer/www/olistica.app/public_html/olisystem/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 692

@@ -84,6 +84,52 @@ $menu->services->add('<span>'.trans('messages.add_form_title',['form' => trans('
 </svg>')
 ->link->attr(['class' => '']);
 
+$menu->add('<span>'.trans('messages.groups_options').'</span><span class="custom-tooltip"><span class="tooltip-text">'.__('messages.groups_options').'</span></span>', ['class' => ''])
+->prepend('<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 512 512"><title>ionicons-v5-n</title><circle cx="256" cy="256" r="192" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><circle cx="256" cy="256" r="64" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:32px"/><line x1="224" y1="192" x2="171" y2="85" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="288" y1="192" x2="341" y2="85" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="327.55" y1="255.81" x2="446.96" y2="255.94" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="299.09" y1="313.13" x2="371.34" y2="408.19" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="184.45" y1="255.81" x2="65.04" y2="255.94" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="212.91" y1="313.13" x2="140.66" y2="408.19" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/></svg>')
+->nickname('groupsOptions')
+->data('permission', 'groups-options list')
+->link->attr(["class" => ""])
+->href('#groups-options');
+
+
+$menu->groupsOptions->add('<span>'.trans('messages.list_form_title',['form' => trans('messages.groups_options')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'group-options.index'])
+->data('permission', 'groups-options list')
+->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 4.875C1.3775 4.875 0.875 5.3775 0.875 6C0.875 6.6225 1.3775 7.125 2 7.125C2.6225 7.125 3.125 6.6225 3.125 6C3.125 5.3775 2.6225 4.875 2 4.875ZM2 0.375C1.3775 0.375 0.875 0.8775 0.875 1.5C0.875 2.1225 1.3775 2.625 2 2.625C2.6225 2.625 3.125 2.1225 3.125 1.5C3.125 0.8775 2.6225 0.375 2 0.375ZM2 9.375C1.3775 9.375 0.875 9.885 0.875 10.5C0.875 11.115 1.385 11.625 2 11.625C2.615 11.625 3.125 11.115 3.125 10.5C3.125 9.885 2.6225 9.375 2 9.375ZM4.25 11.25H14.75V9.75H4.25V11.25ZM4.25 6.75H14.75V5.25H4.25V6.75ZM4.25 0.75V2.25H14.75V0.75H4.25Z" fill="#6C757D" />
+</svg>')
+->link->attr(['class' => '']);
+
+
+$menu->groupsOptions->add('<span>'.trans('messages.add_form_title',['form' => trans('messages.groups_options')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'group-options.create'])
+->data('role', ['admin','provider','demo_admin'])
+->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.75 4.25H7.25V7.25H4.25V8.75H7.25V11.75H8.75V8.75H11.75V7.25H8.75V4.25ZM8 0.5C3.86 0.5 0.5 3.86 0.5 8C0.5 12.14 3.86 15.5 8 15.5C12.14 15.5 15.5 12.14 15.5 8C15.5 3.86 12.14 0.5 8 0.5ZM8 14C4.6925 14 2 11.3075 2 8C2 4.6925 4.6925 2 8 2C11.3075 2 14 4.6925 14 8C14 11.3075 11.3075 14 8 14Z" fill="#6C757D" />
+</svg>')
+->link->attr(['class' => '']);
+
+$menu->add('<span>'.trans('messages.options').'</span><span class="custom-tooltip"><span class="tooltip-text">'.__('messages.options').'</span></span>', ['class' => ''])
+->prepend('<svg width="15" height="15" class="sidebar-menu-icon" xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M440.9 136.3a4 4 0 000-6.91L288.16 40.65a64.14 64.14 0 00-64.33 0L71.12 129.39a4 4 0 000 6.91L254 243.88a4 4 0 004.06 0zM54 163.51a4 4 0 00-6 3.49v173.89a48 48 0 0023.84 41.39L234 479.51a4 4 0 006-3.46V274.3a4 4 0 00-2-3.46zM272 275v201a4 4 0 006 3.46l162.15-97.23A48 48 0 00464 340.89V167a4 4 0 00-6-3.45l-184 108a4 4 0 00-2 3.45z"/></svg>')
+->nickname('options')
+->data('permission', 'options list')
+->link->attr(["class" => ""])
+->href('#options');
+
+
+$menu->options->add('<span>'.trans('messages.list_form_title',['form' => trans('messages.options')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'options.index'])
+->data('permission', 'groups-options list')
+->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 4.875C1.3775 4.875 0.875 5.3775 0.875 6C0.875 6.6225 1.3775 7.125 2 7.125C2.6225 7.125 3.125 6.6225 3.125 6C3.125 5.3775 2.6225 4.875 2 4.875ZM2 0.375C1.3775 0.375 0.875 0.8775 0.875 1.5C0.875 2.1225 1.3775 2.625 2 2.625C2.6225 2.625 3.125 2.1225 3.125 1.5C3.125 0.8775 2.6225 0.375 2 0.375ZM2 9.375C1.3775 9.375 0.875 9.885 0.875 10.5C0.875 11.115 1.385 11.625 2 11.625C2.615 11.625 3.125 11.115 3.125 10.5C3.125 9.885 2.6225 9.375 2 9.375ZM4.25 11.25H14.75V9.75H4.25V11.25ZM4.25 6.75H14.75V5.25H4.25V6.75ZM4.25 0.75V2.25H14.75V0.75H4.25Z" fill="#6C757D" />
+</svg>')
+->link->attr(['class' => '']);
+
+
+$menu->options->add('<span>'.trans('messages.add_form_title',['form' => trans('messages.options')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'options.create'])
+->data('role', ['admin','provider','demo_admin'])
+->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.75 4.25H7.25V7.25H4.25V8.75H7.25V11.75H8.75V8.75H11.75V7.25H8.75V4.25ZM8 0.5C3.86 0.5 0.5 3.86 0.5 8C0.5 12.14 3.86 15.5 8 15.5C12.14 15.5 15.5 12.14 15.5 8C15.5 3.86 12.14 0.5 8 0.5ZM8 14C4.6925 14 2 11.3075 2 8C2 4.6925 4.6925 2 8 2C11.3075 2 14 4.6925 14 8C14 11.3075 11.3075 14 8 14Z" fill="#6C757D" />
+</svg>')
+->link->attr(['class' => '']);
+
 $menu->add('<span>'.trans('messages.service_package').'</span><span class="custom-tooltip"><span class="tooltip-text">'.__('messages.service_package').'</span></span>', ['class' => ''])
 ->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M9.16495 13.8875C9.02995 14.0225 8.78995 14.045 8.63245 13.8875C8.49745 13.7525 8.47495 13.5125 8.63245 13.355L11.1749 10.8125L10.1174 9.755L7.57495 12.2975C7.43245 12.4475 7.19245 12.44 7.04245 12.2975C6.88495 12.14 6.90745 11.9 7.04245 11.765L9.58495 9.2225L8.52745 8.165L5.98495 10.7075C5.84995 10.8425 5.60995 10.865 5.45245 10.7075C5.30995 10.565 5.30995 10.325 5.45245 10.175L7.99495 7.6325L6.92995 6.575L4.38745 9.1175C4.25245 9.2525 4.01245 9.275 3.85495 9.1175C3.71245 8.9675 3.71245 8.735 3.85495 8.585L7.13995 5.3L8.54245 6.695C9.25495 7.4075 10.4849 7.4 11.1974 6.695C11.9324 5.96 11.9324 4.775 11.1974 4.04L9.80245 2.645L10.0124 2.435C10.5974 1.85 11.5499 1.85 12.1349 2.435L15.3149 5.615C15.8999 6.2 15.8999 7.1525 15.3149 7.7375L9.16495 13.8875ZM16.3724 8.8025C17.5424 7.6325 17.5424 5.735 16.3724 4.5575L13.1924 1.3775C12.0224 0.2075 10.1249 0.2075 8.94745 1.3775L8.73745 1.5875L8.52745 1.3775C7.35745 0.2075 5.45995 0.2075 4.28245 1.3775L1.62745 4.0325C0.562447 5.0975 0.464947 6.755 1.32745 7.925L2.41495 6.8375C2.12245 6.275 2.21995 5.5625 2.69245 5.09L5.34745 2.435C5.93245 1.85 6.88495 1.85 7.46995 2.435L10.1399 5.105C10.2749 5.24 10.2974 5.48 10.1399 5.6375C9.98245 5.795 9.74245 5.7725 9.60745 5.6375L7.13995 3.1775L2.78995 7.52C2.05495 8.2475 2.05495 9.44 2.78995 10.175C3.08245 10.4675 3.45745 10.6475 3.85495 10.7C3.90745 11.09 4.07995 11.465 4.37995 11.765C4.67995 12.065 5.05495 12.2375 5.44495 12.29C5.49745 12.68 5.66995 13.055 5.96995 13.355C6.26995 13.655 6.64495 13.8275 7.03495 13.88C7.08745 14.285 7.26745 14.6525 7.55995 14.945C7.91245 15.2975 8.38495 15.4925 8.88745 15.4925C9.38995 15.4925 9.86245 15.2975 10.2149 14.945L16.3724 8.8025Z" fill="#6C757D" />

@@ -565,7 +565,7 @@ return [
   'ratings' => 'Ratings',
   'user_wallet_setting' => 'User Wallet Setting',
   'enable_user_wallet' => 'Enable User Wallet',
-  'groups_options' => 'Options groups',
+  'option_groups' => 'Options groups',
   'options' => 'Options',
 
 ];

@@ -37,7 +37,7 @@ use App\Http\Controllers\ServicePackageController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookingRatingController;
 use App\Http\Controllers\HandymanRatingController;
-use App\Http\Controllers\GroupOptionsController;
+use App\Http\Controllers\OptionGroupsController;
 use App\Http\Controllers\OptionsController;
 
 /*
@@ -231,9 +231,9 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::post('blog-action',[BlogController::class, 'action'])->name('blog.action');
     Route::post('blog/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
     
-    Route::resource('group-options', GroupOptionsController::class);
-    Route::post('group-options-action',[GroupOptionsController::class, 'action'])->name('group_options.action');
-    Route::post('group-options/{id}', [GroupOptionsController::class, 'destroy'])->name('group_options.destroy');
+    Route::resource('option-groups', OptionGroupsController::class);
+    Route::post('option-groups-action',[OptionGroupsController::class, 'action'])->name('option_groups.action');
+    Route::post('option-groups/{id}', [OptionGroupsController::class, 'destroy'])->name('option_groups.destroy');
     Route::resource('options', OptionsController::class);
     Route::post('options-action',[OptionsController::class, 'action'])->name('options.action');
     Route::post('options/{id}', [OptionsController::class, 'destroy'])->name('options.destroy');

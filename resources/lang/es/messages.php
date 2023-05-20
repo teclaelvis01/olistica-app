@@ -559,6 +559,6 @@
   'ratings' => 'Ratings',
   'user_wallet_setting' => 'User Wallet Setting',
   'enable_user_wallet' => 'Enable User Wallet',
-  'groups_options' => 'Grupo de opciones',
+  'option_groups' => 'Grupo de opciones',
   'options' => 'Opciones',
 );

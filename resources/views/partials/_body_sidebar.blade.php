@@ -84,7 +84,7 @@ $menu->services->add('<span>'.trans('messages.add_form_title',['form' => trans('
 </svg>')
 ->link->attr(['class' => '']);
 
-$menu->add('<span>'.trans('messages.groups_options').'</span><span class="custom-tooltip"><span class="tooltip-text">'.__('messages.groups_options').'</span></span>', ['class' => ''])
+$menu->add('<span>'.trans('messages.option_groups').'</span><span class="custom-tooltip"><span class="tooltip-text">'.__('messages.option_groups').'</span></span>', ['class' => ''])
 ->prepend('<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 512 512"><title>ionicons-v5-n</title><circle cx="256" cy="256" r="192" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><circle cx="256" cy="256" r="64" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:32px"/><line x1="224" y1="192" x2="171" y2="85" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="288" y1="192" x2="341" y2="85" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="327.55" y1="255.81" x2="446.96" y2="255.94" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="299.09" y1="313.13" x2="371.34" y2="408.19" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="184.45" y1="255.81" x2="65.04" y2="255.94" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/><line x1="212.91" y1="313.13" x2="140.66" y2="408.19" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"/></svg>')
 ->nickname('groupsOptions')
 ->data('permission', 'groups-options list')
@@ -92,15 +92,15 @@ $menu->add('<span>'.trans('messages.groups_options').'</span><span class="custom
 ->href('#groups-options');
 
 
-$menu->groupsOptions->add('<span>'.trans('messages.list_form_title',['form' => trans('messages.groups_options')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'group-options.index'])
-->data('permission', 'groups-options list')
+$menu->groupsOptions->add('<span>'.trans('messages.list_form_title',['form' => trans('messages.option_groups')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'option-groups.index'])
+->data('permission', 'option-groups list')
 ->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2 4.875C1.3775 4.875 0.875 5.3775 0.875 6C0.875 6.6225 1.3775 7.125 2 7.125C2.6225 7.125 3.125 6.6225 3.125 6C3.125 5.3775 2.6225 4.875 2 4.875ZM2 0.375C1.3775 0.375 0.875 0.8775 0.875 1.5C0.875 2.1225 1.3775 2.625 2 2.625C2.6225 2.625 3.125 2.1225 3.125 1.5C3.125 0.8775 2.6225 0.375 2 0.375ZM2 9.375C1.3775 9.375 0.875 9.885 0.875 10.5C0.875 11.115 1.385 11.625 2 11.625C2.615 11.625 3.125 11.115 3.125 10.5C3.125 9.885 2.6225 9.375 2 9.375ZM4.25 11.25H14.75V9.75H4.25V11.25ZM4.25 6.75H14.75V5.25H4.25V6.75ZM4.25 0.75V2.25H14.75V0.75H4.25Z" fill="#6C757D" />
 </svg>')
 ->link->attr(['class' => '']);
 
 
-$menu->groupsOptions->add('<span>'.trans('messages.add_form_title',['form' => trans('messages.groups_options')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'group-options.create'])
+$menu->groupsOptions->add('<span>'.trans('messages.add_form_title',['form' => trans('messages.option_groups')]).'</span>', ['class' => 'sidebar-layout' ,'route' => 'option-groups.create'])
 ->data('role', ['admin','provider','demo_admin'])
 ->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M8.75 4.25H7.25V7.25H4.25V8.75H7.25V11.75H8.75V8.75H11.75V7.25H8.75V4.25ZM8 0.5C3.86 0.5 0.5 3.86 0.5 8C0.5 12.14 3.86 15.5 8 15.5C12.14 15.5 15.5 12.14 15.5 8C15.5 3.86 12.14 0.5 8 0.5ZM8 14C4.6925 14 2 11.3075 2 8C2 4.6925 4.6925 2 8 2C11.3075 2 14 4.6925 14 8C14 11.3075 11.3075 14 8 14Z" fill="#6C757D" />

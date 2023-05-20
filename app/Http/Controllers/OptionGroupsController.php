@@ -7,8 +7,9 @@ use App\DataTables\SubCategoryDataTable;
 use Illuminate\Http\Request;
 use App\Models\SubCategory;
 use App\Http\Requests\SubCategoryRequest;
+use App\Models\OptionGroups;
 
-class GroupOptionsController extends Controller
+class OptionGroupsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +18,10 @@ class GroupOptionsController extends Controller
      */
     public function index(OptionsGroupsDataTable $dataTable)
     {
-        $pageTitle = trans('messages.list_form_title',['form' => trans('messages.groups_options')] );
+        $pageTitle = trans('messages.list_form_title',['form' => trans('messages.option_groups')] );
         $auth_user = authSession();
         $assets = ['datatable'];
-        return $dataTable->render('groups_options.index', compact('pageTitle','auth_user','assets'));
+        return $dataTable->render('option_groups.index', compact('pageTitle','auth_user','assets'));
     }
 
     /**
@@ -33,15 +34,15 @@ class GroupOptionsController extends Controller
         $id = $request->id;
         $auth_user = authSession();
 
-        $subcategory = SubCategory::find($id);
-        $pageTitle = trans('messages.update_form_title',['form'=>trans('messages.subcategory')]);
+        $option_groups = OptionGroups::find($id);
+        $pageTitle = trans('messages.update_form_title',['form'=>trans('messages.option_groups')]);
         
-        if($subcategory == null){
-            $pageTitle = trans('messages.add_button_form',['form' => trans('messages.subcategory')]);
-            $subcategory = new SubCategory;
+        if($option_groups == null){
+            $pageTitle = trans('messages.add_button_form',['form' => trans('messages.option_groups')]);
+            $option_groups = new OptionGroups;
         }
         
-        return view('subcategory.create', compact('pageTitle' ,'subcategory' ,'auth_user' ));
+        return view('option_groups.create', compact('pageTitle' ,'option_groups' ,'auth_user' ));
     }
 
     /**

@@ -7,7 +7,7 @@
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
                             <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
                             @if($auth_user->can('options add'))
-                            <a href="{{ route('options.create') }}" class="float-right mr-1 btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> {{ trans('messages.add_form_title',['form' => trans('messages.groups_options')  ]) }}</a>
+                            <a href="{{ route('options.create') }}" class="float-right mr-1 btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> {{ trans('messages.add_form_title',['form' => trans('messages.option_groups')  ]) }}</a>
                             @endif
                         </div>
                         {{ $dataTable->table(['class' => 'table  w-100'],false) }}

@@ -14,4 +14,22 @@ class Options extends Model
         'name',
         'price'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($row) {
+            $row->optionsAdded()->delete();
+            if ($row->forceDeleting === true) {
+                $row->optionsAdded()->forceDelete();
+            }
+        });
+        static::restoring(function ($row) {
+            $row->optionsAdded()->withTrashed()->restore();
+        });
+    }
+
+    public function optionsAdded(){
+        return $this->hasMany(OptionGroupsOptions::class,'options_id','id');
+    }
 }

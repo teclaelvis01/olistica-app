@@ -8,14 +8,14 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Service extends Model implements  HasMedia
+class Service extends Model implements HasMedia
 {
-    use InteractsWithMedia,HasFactory,SoftDeletes;
-    
+    use InteractsWithMedia, HasFactory, SoftDeletes;
+
     protected $table = 'services';
     protected $fillable = [
-        'name', 'category_id', 'provider_id' , 'type' , 'is_slot','discount' , 'duration' ,'description', 'is_featured', 'status' , 'price' , 'added_by','subcategory_id','service_type',
-        'is_enable_advance_payment','advance_payment_amount'
+        'name', 'category_id', 'provider_id', 'type', 'is_slot', 'discount', 'duration', 'description', 'is_featured', 'status', 'price', 'added_by', 'subcategory_id', 'service_type',
+        'is_enable_advance_payment', 'advance_payment_amount'
     ];
 
     protected $casts = [
@@ -32,37 +32,55 @@ class Service extends Model implements  HasMedia
         'advance_payment_amount'    => 'double',
     ];
 
-    public function providers(){
-        return $this->belongsTo('App\Models\User','provider_id','id')->withTrashed();
+    public function providers()
+    {
+        return $this->belongsTo('App\Models\User', 'provider_id', 'id')->withTrashed();
     }
 
 
-    public function category(){
-        return $this->belongsTo('App\Models\Category','category_id','id')->withTrashed();
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category', 'category_id', 'id')->withTrashed();
     }
-    public function subcategory(){
-        return $this->belongsTo('App\Models\SubCategory','subcategory_id','id')->withTrashed();
+    public function subcategory()
+    {
+        return $this->belongsTo('App\Models\SubCategory', 'subcategory_id', 'id')->withTrashed();
     }
-    public function serviceRating(){
-        return $this->hasMany(BookingRating::class, 'service_id','id')->orderBy('created_at','desc');
+    public function serviceRating()
+    {
+        return $this->hasMany(BookingRating::class, 'service_id', 'id')->orderBy('created_at', 'desc');
     }
-    public function serviceBooking(){
-        return $this->hasMany(Booking::class, 'service_id','id');
+    public function serviceBooking()
+    {
+        return $this->hasMany(Booking::class, 'service_id', 'id');
     }
-    public function serviceCoupons(){
-        return $this->hasMany(CouponServiceMapping::class, 'service_id','id');
-    }
-
-    public function getUserFavouriteService(){
-        return $this->hasMany(UserFavouriteService::class, 'service_id','id');
-    }
-
-    public function providerAddress(){
-        return $this->hasMany(ProviderAddressMapping::class, 'provider_id','id');
+    public function serviceCoupons()
+    {
+        return $this->hasMany(CouponServiceMapping::class, 'service_id', 'id');
     }
 
-    public function providerServiceAddress(){
-        return $this->hasMany(ProviderServiceAddressMapping::class, 'service_id','id')->with('providerAddressMapping');
+    public function getUserFavouriteService()
+    {
+        return $this->hasMany(UserFavouriteService::class, 'service_id', 'id');
+    }
+
+    public function providerAddress()
+    {
+        return $this->hasMany(ProviderAddressMapping::class, 'provider_id', 'id');
+    }
+
+    public function providerServiceAddress()
+    {
+        return $this->hasMany(ProviderServiceAddressMapping::class, 'service_id', 'id')->with('providerAddressMapping');
+    }
+    /**
+     * Undocumented function
+     *
+     * @return OptionGroupsService
+     */
+    public function optionGroups()
+    {
+        return $this->hasMany(OptionGroupsService::class, 'service_id', 'id');
     }
 
     protected static function boot()
@@ -72,18 +90,19 @@ class Service extends Model implements  HasMedia
             $row->serviceBooking()->delete();
             $row->serviceCoupons()->delete();
             $row->serviceRating()->delete();
+            $row->optionGroups()->delete();
             $row->getUserFavouriteService()->delete();
 
-            if($row->forceDeleting === true)
-            {
+            if ($row->forceDeleting === true) {
                 $row->serviceRating()->forceDelete();
                 $row->serviceCoupons()->forceDelete();
                 $row->serviceBooking()->forceDelete();
+                $row->optionGroups()->forceDelete();
                 $row->getUserFavouriteService()->forceDelete();
             }
         });
 
-        static::restoring(function($row) {
+        static::restoring(function ($row) {
             $row->serviceRating()->withTrashed()->restore();
             $row->serviceCoupons()->withTrashed()->restore();
             $row->serviceBooking()->withTrashed()->restore();
@@ -92,22 +111,23 @@ class Service extends Model implements  HasMedia
     }
     public function scopeMyService($query)
     {
-        if(auth()->user()->hasRole('admin')) {
+        if (auth()->user()->hasRole('admin')) {
             return $query;
         }
 
-        if(auth()->user()->hasRole('provider')) {
+        if (auth()->user()->hasRole('provider')) {
             return $query->where('provider_id', \Auth::id());
         }
 
         return $query;
     }
-    
-    public function scopeLocationService($query, $latitude = '', $longitude = '', $radius = 50, $unit = 'km'){
-        if(default_earning_type() === 'subscription'){
-            $provider = User::where('user_type','provider')->where('status',1)->where('is_subscribe',1)->pluck('id');
-        }else{
-            $provider = User::where('user_type','provider')->where('status',1)->pluck('id');
+
+    public function scopeLocationService($query, $latitude = '', $longitude = '', $radius = 50, $unit = 'km')
+    {
+        if (default_earning_type() === 'subscription') {
+            $provider = User::where('user_type', 'provider')->where('status', 1)->where('is_subscribe', 1)->pluck('id');
+        } else {
+            $provider = User::where('user_type', 'provider')->where('status', 1)->pluck('id');
         }
         $unit_value = countUnitvalue($unit);
         $near_location_id = ProviderAddressMapping::selectRaw("id, provider_id, address, latitude, longitude,
@@ -117,21 +137,23 @@ class Service extends Model implements  HasMedia
                 ) + sin( radians($latitude) ) *
                 sin( radians( latitude ) ) )
                 ) AS distance")
-        ->where('status',1)
-        ->whereIn('provider_id',$provider)
-        ->having("distance", "<=", $radius)
-        ->orderBy("distance",'asc')
-        ->get()->pluck('id');
-        return $near_location_id;        
+            ->where('status', 1)
+            ->whereIn('provider_id', $provider)
+            ->having("distance", "<=", $radius)
+            ->orderBy("distance", 'asc')
+            ->get()->pluck('id');
+        return $near_location_id;
     }
     public function scopeList($query)
     {
         return $query->orderBy('deleted_at', 'asc');
     }
-    public function servicePackage(){
-        return $this->hasMany(PackageServiceMapping::class, 'service_id','id');
+    public function servicePackage()
+    {
+        return $this->hasMany(PackageServiceMapping::class, 'service_id', 'id');
     }
-    public function postJobService(){
+    public function postJobService()
+    {
         return $this->hasMany(PostJobServiceMapping::class, 'service_id', 'id');
     }
 }

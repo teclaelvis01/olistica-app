@@ -103,6 +103,26 @@
                                 {{ Form::label('status',__('messages.status').' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
                                 {{ Form::select('status',['1' => __('messages.active') , '0' => __('messages.inactive') ],old('status'),[ 'class' =>'form-control select2js','required']) }}
                             </div>
+
+                            @if(auth()->user()->hasAnyRole(['admin','demo_admin']))
+                            <div class="form-group col-md-4">
+                                {{ Form::label('name', __('messages.select_name',[ 'select' => __('messages.option_groups') ]).' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
+                                <br />
+                                @php
+                                $assigned_option_groups = $servicedata->optionGroups->mapWithKeys(function ($item) {
+                                return [$item->option_groups_id => optional($item->optionGroups)->name];
+                                });
+                                @endphp
+                                {{ Form::select('option_groups_id[]',  $assigned_option_groups, $servicedata->optionGroups->pluck('option_groups_id'), [
+                                            'class' => 'select2js form-group',
+                                            'id' => 'option_groups_id',
+                                            'multiple' => 'multiple',
+                                            'required',
+                                            'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.option_groups') ]),
+                                            'data-ajax--url' => route('ajax-list', ['type' => 'option_groups']),
+                                        ]) }}
+                            </div>
+                            @endif
                         </div>
 
                         <div class="row service_attachment_div">

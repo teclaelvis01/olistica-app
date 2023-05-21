@@ -133,6 +133,9 @@ class ServiceController extends Controller
         if(!empty($request->advance_payment_amount)){
             $services['advance_payment_amount'] = $request->advance_payment_amount;
         }
+        /**
+         * @var Service 
+         */
         $result = Service::updateOrCreate(['id' => $request->id], $services);
 
         if($result->providerServiceAddress()->count() > 0)
@@ -147,6 +150,21 @@ class ServiceController extends Controller
                     'provider_address_id'   => $address,
                 ];
                 $result->providerServiceAddress()->insert($provider_service_address);
+            }
+        }
+
+        if($result->optionGroups()->count() > 0)
+        {
+            $result->optionGroups()->delete();
+        }
+
+        if($request->option_groups_id != null) {
+            foreach($request->option_groups_id as $og_id) {
+                $og_data = [
+                    'service_id'   => $result->id,
+                    'option_groups_id'   => $og_id,
+                ];
+                $result->optionGroups()->insert($og_data);
             }
         }
 

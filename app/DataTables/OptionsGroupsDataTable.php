@@ -29,15 +29,32 @@ class OptionsGroupsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('name', function ($subcategory) {
-                return '<a class="btn-link btn-link-hover" href=' . route('subcategory.create', ['id' => $subcategory->id]) . '>' . $subcategory->name . '</a>';
+            ->editColumn('name', function ($option_groups) {
+                return '<a class="btn-link btn-link-hover" href=' . route('option-groups.create', ['id' => $option_groups->id]) . '>' . $option_groups->name . '</a>';
             })
-            ->addColumn('action', function ($subcategory) {
-                return view('subcategory.action', compact('subcategory'))->render();
+            ->addColumn('options', function ($option_groups) {
+                $options = [];
+                /**
+                 * @var OptionGroups $option_groups
+                 */
+                $options_raw = $option_groups->options;
+                $iteration = 0;
+                $has_more = false;
+                foreach ($options_raw as $key => $value) {
+                    if($iteration >= OptionGroups::OPTION_LIMIT_ON_LIST){
+                        $has_more = true;
+                        break;
+                    }
+                    $options[] = $value;
+                    $iteration ++;
+                }
+                return view('option_groups.options_list', compact('options','has_more'))->render();
+            })
+            ->addColumn('action', function ($option_groups) {
+                return view('option_groups.action', compact('option_groups'))->render();
             })
             ->addIndexColumn()
-            ->rawColumns(['name', 'action']);
-
+            ->rawColumns(['name', 'options', 'action']);
     }
 
     /**
@@ -48,6 +65,13 @@ class OptionsGroupsDataTable extends DataTable
      */
     public function query(OptionGroups $model)
     {
+        /**
+         * @var User
+         */
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $model = $model->withTrashed();
+        }
         return $model->newQuery();
     }
     /**
@@ -63,6 +87,7 @@ class OptionsGroupsDataTable extends DataTable
                 ->title(__('messages.no'))
                 ->orderable(false),
             Column::make('name'),
+            Column::make('options'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

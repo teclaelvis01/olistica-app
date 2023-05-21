@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\OptionsGroupsDataTable;
-use App\DataTables\SubCategoryDataTable;
+use App\Http\Requests\OptionGroupsRequest;
 use Illuminate\Http\Request;
 use App\Models\SubCategory;
-use App\Http\Requests\SubCategoryRequest;
 use App\Models\OptionGroups;
 
 class OptionGroupsController extends Controller
@@ -18,10 +17,10 @@ class OptionGroupsController extends Controller
      */
     public function index(OptionsGroupsDataTable $dataTable)
     {
-        $pageTitle = trans('messages.list_form_title',['form' => trans('messages.option_groups')] );
+        $pageTitle = trans('messages.list_form_title', ['form' => trans('messages.option_groups')]);
         $auth_user = authSession();
         $assets = ['datatable'];
-        return $dataTable->render('option_groups.index', compact('pageTitle','auth_user','assets'));
+        return $dataTable->render('option_groups.index', compact('pageTitle', 'auth_user', 'assets'));
     }
 
     /**
@@ -35,14 +34,14 @@ class OptionGroupsController extends Controller
         $auth_user = authSession();
 
         $option_groups = OptionGroups::find($id);
-        $pageTitle = trans('messages.update_form_title',['form'=>trans('messages.option_groups')]);
-        
-        if($option_groups == null){
-            $pageTitle = trans('messages.add_button_form',['form' => trans('messages.option_groups')]);
+        $pageTitle = trans('messages.update_form_title', ['form' => trans('messages.option_groups')]);
+
+        if ($option_groups == null) {
+            $pageTitle = trans('messages.add_button_form', ['form' => trans('messages.option_groups')]);
             $option_groups = new OptionGroups;
         }
-        
-        return view('option_groups.create', compact('pageTitle' ,'option_groups' ,'auth_user' ));
+
+        return view('option_groups.create', compact('pageTitle', 'option_groups', 'auth_user'));
     }
 
     /**
@@ -51,29 +50,41 @@ class OptionGroupsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SubCategoryRequest $request)
+    public function store(OptionGroupsRequest $request)
     {
-        if(demoUserPermission()){
+        if (demoUserPermission()) {
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
         $data = $request->all();
-       
-        $data['is_featured'] = 0;
-        if($request->has('is_featured')){
-			$data['is_featured'] = 1;
-		}
-        $result = SubCategory::updateOrCreate(['id' => $data['id'] ],$data);
 
-        storeMediaFile($result,$request->subcategory_image, 'subcategory_image');
+        /**
+         * @var OptionGroups
+         */
+        $result = OptionGroups::updateOrCreate(['id' => $data['id']], $data);
 
-        $message = trans('messages.update_form',['form' => trans('messages.subcategory')]);
-        if($result->wasRecentlyCreated){
-            $message = trans('messages.save_form',['form' => trans('messages.subcategory')]);
+        if ($request->type  == '') {
+            if (count($data['options_id']) > 0) {
+                $result->optionsAdded()->delete();
+                if ($data['options_id'] != null) {
+                    foreach ($data['options_id'] as $option) {
+                        $add_data = [
+                            'option_groups_id'   => $result->id,
+                            'options_id'  =>  $option
+                        ];
+                        $result->optionsAdded()->insert($add_data);
+                    }
+                }
+            }
         }
-        if($request->is('api/*')) {
+        $message = trans('messages.update_form', ['form' => trans('messages.options')]);
+        if ($result->wasRecentlyCreated) {
+            $message = trans('messages.save_form', ['form' => trans('messages.options')]);
+        }
+        if ($request->is('api/*')) {
             return comman_message_response($message);
-		}
-        return redirect(route('subcategory.index'))->withSuccess($message);    
+        }
+
+        return redirect(route('option-groups.index'))->withSuccess($message);
     }
 
     /**
@@ -118,37 +129,38 @@ class OptionGroupsController extends Controller
      */
     public function destroy($id)
     {
-        if(demoUserPermission()){
+        if (demoUserPermission()) {
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
-        $subcategory = SubCategory::find($id);
-        $msg= __('messages.msg_fail_to_delete',['name' => __('messages.subcategory')] );
-        
-        if($subcategory!='') { 
-            $subcategory->delete();
-            $msg= __('messages.msg_deleted',['name' => __('messages.subcategory')] );
+        $option_groups = OptionGroups::find($id);
+        $msg = __('messages.msg_fail_to_delete', ['name' => __('messages.option_groups')]);
+
+        if ($option_groups != '') {
+            $option_groups->delete();
+            $msg = __('messages.msg_deleted', ['name' => __('messages.option_groups')]);
         }
-        if(request()->is('api/*')) {
+        if (request()->is('api/*')) {
             return comman_message_response($msg);
-		}
-        return comman_custom_response(['message'=> $msg , 'status' => true]);
+        }
+        return comman_custom_response(['message' => $msg, 'status' => true]);
     }
-    public function action(Request $request){
+    public function action(Request $request)
+    {
         $id = $request->id;
 
-        $subcategory  = SubCategory::withTrashed()->where('id',$id)->first();
-        $msg = __('messages.not_found_entry',['name' => __('messages.subcategory')] );
-        if($request->type == 'restore') {
-            $subcategory->restore();
-            $msg = __('messages.msg_restored',['name' => __('messages.subcategory')] );
+        $option_groups  = OptionGroups::withTrashed()->where('id', $id)->first();
+        $msg = __('messages.not_found_entry', ['name' => __('messages.option_groups')]);
+        if ($request->type == 'restore') {
+            $option_groups->restore();
+            $msg = __('messages.msg_restored', ['name' => __('messages.option_groups')]);
         }
-        if($request->type === 'forcedelete'){
-            $subcategory->forceDelete();
-            $msg = __('messages.msg_forcedelete',['name' => __('messages.subcategory')] );
+        if ($request->type === 'forcedelete') {
+            $option_groups->forceDelete();
+            $msg = __('messages.msg_forcedelete', ['name' => __('messages.option_groups')]);
         }
-        if(request()->is('api/*')){
+        if (request()->is('api/*')) {
             return comman_message_response($msg);
-		}
-        return comman_custom_response(['message'=> $msg , 'status' => true]);
+        }
+        return comman_custom_response(['message' => $msg, 'status' => true]);
     }
 }

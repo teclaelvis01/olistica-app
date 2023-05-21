@@ -391,6 +391,24 @@ class HomeController extends Controller
 
                 $items = $items->get();
                 break;
+            case 'options':
+                $items = \App\Models\Options::select('id', 'name as text');
+
+                if ($value != '') {
+                    $items->where('name', 'LIKE', '%' . $value . '%');
+                }
+
+                $items = $items->get();
+                break;
+            case 'option_groups':
+                $items = \App\Models\OptionGroups::select('id', 'name as text');
+
+                if ($value != '') {
+                    $items->where('name', 'LIKE', '%' . $value . '%');
+                }
+
+                $items = $items->get();
+                break;
             case 'providertype':
                 $items = \App\Models\ProviderType::select('id', 'name as text')
                     ->where('status', 1);

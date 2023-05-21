@@ -7,7 +7,7 @@
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
                             <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
                             @if($auth_user->can('option_groups list'))
-                                <a href="{{ route('option_groups.index') }}" class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                                <a href="{{ route('option-groups.index') }}" class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
                             @endif
                         </div>
                     </div>
@@ -46,10 +46,26 @@
 
                              
                                 
-                                <div class="form-group col-md-12">
+                                {{-- <div class="form-group col-md-12">
                                     {{ Form::label('description',trans('messages.description'), ['class' => 'form-control-label']) }}
                                     {{ Form::textarea('description', null, ['class'=>"form-control textarea" , 'rows'=>3  , 'placeholder'=> __('messages.description') ]) }}
-                                </div>
+                                </div> --}}
+                                <div class="form-group col-md-4">
+                                {{ Form::label('name', __('messages.select_name',[ 'select' => __('messages.options') ]).' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
+                                <br />
+                                @php
+                                $assigned_option = $option_groups->optionsAdded->mapWithKeys(function ($item) {
+                                return [$item->options_id => optional($item->options)->name];
+                                });
+                                @endphp
+                                {{ Form::select('options_id[]', $assigned_option, $option_groups->optionsAdded->pluck('options_id'), [
+                                            'class' => 'select2js form-group options',
+                                            'required',
+                                            'multiple' => 'multiple',
+                                            'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.options') ]),
+                                            'data-ajax--url' => route('ajax-list', ['type' => 'options']),
+                                        ]) }}
+                            </div>
                             </div>
                             {{ Form::submit( trans('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
                         {{ Form::close() }}

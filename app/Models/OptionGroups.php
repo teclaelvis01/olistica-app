@@ -14,10 +14,31 @@ class OptionGroups extends Model
         'name'
     ];
 
+    const OPTION_LIMIT_ON_LIST = 3;
 
-    // public function category(){
-    //     return $this->belongsTo('App\Models\Category','category_id','id')->withTrashed();
-    // }
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($row) {
+            $row->optionsAdded()->delete();
+            if ($row->forceDeleting === true) {
+                $row->optionsAdded()->forceDelete();
+            }
+        });
+        static::restoring(function ($row) {
+            $row->optionsAdded()->withTrashed()->restore();
+        });
+    }
+
+    public function optionsAdded()
+    {
+        return $this->hasMany(OptionGroupsOptions::class, 'option_groups_id', 'id');
+    }
+
+
+    public function options(){
+        return $this->belongsToMany(Options::class,'option_groups_options')->withTrashed();
+    }
     // public function services(){
     //     return $this->hasMany(Service::class, 'subcategory_id','id');
     // }

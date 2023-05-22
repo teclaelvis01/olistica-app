@@ -15,7 +15,7 @@
                 <div class="service-title">
                     <h3 class="service-title-main">{{serviceData.name}}</h3>
                     <div class="price d-flex align-items-center">
-                        <h4 class="primary-color">{{serviceData.price_format}}</h4> <small v-if="serviceData.type =='hourly'">/hr</small> <span v-if="serviceData.discount" class="ps-2 ser-discount">{{serviceData.discount}}% {{__('messages.off')}}</span>
+                        <h4 class="primary-color">{{priceResume}}</h4> <small v-if="serviceData.type =='hourly'">/hr</small> <span v-if="serviceData.discount" class="ps-2 ser-discount">{{serviceData.discount}}% {{__('messages.off')}}</span>
                     </div>
                 </div>
                 <div class="service-meta">

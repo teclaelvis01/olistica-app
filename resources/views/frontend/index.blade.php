@@ -10,6 +10,7 @@
         <link rel="shortcut icon" class="site_favicon_preview" href="{{ getSingleMedia(settingSession('get'),'site_favicon',null) }}" />
         <link rel="stylesheet" href="{{ asset('vendor/@fortawesome/fontawesome-free/css/all.min.css')}}">
         <link href="{{ asset('css/frontend.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/custom_opt.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/frontend/slick.css')}}">
     </head>
     <script>
@@ -20,6 +21,6 @@
         <div id="app">
             <Default></Default>
         </div>
-        <script src="{{ asset('js/frontend.min.js') }}" defer></script>
+        <script src="{{ mix('js/frontend.min.js') }}" defer></script>
     </body>
 </html>

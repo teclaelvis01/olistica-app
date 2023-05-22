@@ -19,6 +19,7 @@ class GroupsServiceResource extends JsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'options'   => $this->options,
+            'selected'   => null,
         ];
     }
 }

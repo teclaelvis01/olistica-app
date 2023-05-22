@@ -12,7 +12,9 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/frontend.js', 'public/js/frontend.min.js').vue()
-.sass('public/frontend/handyman.scss', 'public/css/frontend.min.css', []);
+.sass('public/frontend/handyman.scss', 'public/css/frontend.min.css', [])
+.sass('resources/sass/custom_opt.scss', 'public/css/custom_opt.min.css', [])
+.version();
 
 mix.js('resources/js/backend-bundle.js', 'public/js/backend-bundle.min.js')
     .sass('resources/scss/backend-bundle.scss','public/css/backend-bundle.min.css')

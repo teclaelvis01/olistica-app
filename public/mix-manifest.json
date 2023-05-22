@@ -1,7 +1,8 @@
 {
-    "/js/frontend.min.js": "/js/frontend.min.js",
-    "/js/backend-bundle.min.js": "/js/backend-bundle.min.js",
-    "/css/frontend.min.css": "/css/frontend.min.css",
-    "/css/backend-bundle.min.css": "/css/backend-bundle.min.css",
-    "/css/backend.css": "/css/backend.css"
+    "/js/frontend.min.js": "/js/frontend.min.js?id=b59093c071b3c8614218fe3771e57450",
+    "/js/backend-bundle.min.js": "/js/backend-bundle.min.js?id=b8e8cbdbedf4011903e03c1ffd93726b",
+    "/css/frontend.min.css": "/css/frontend.min.css?id=593a59b9462002b153f7baa29ff26e3f",
+    "/css/backend-bundle.min.css": "/css/backend-bundle.min.css?id=0df5e41044eff4a2a0fca7f2a5144ed6",
+    "/css/backend.css": "/css/backend.css?id=9f92a97e0aab17a52602e6870c971eb4",
+    "/css/custom_opt.min.css": "/css/custom_opt.min.css?id=e453ffe8188854f9c523503732e7ee7d"
 }

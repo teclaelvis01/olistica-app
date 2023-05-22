@@ -35,9 +35,7 @@
                             </span>
                         </li>
                     </ul>
-                    <div class="book-now-btn">
-                        <button class="btn btn-primary"><router-link class="text-white" :to="{name: 'book-service',params: { service_id: serviceData.id}}">{{__('messages.book_now')}}</router-link></button>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -55,6 +53,47 @@
                                 <p>{{serviceData.description}}</p>                                  
                             </div>                            
                         </div>
+
+                        <!-- service options -->
+                        <div v-if="groupsOptions.length > 0" class="service-options">
+                            <div class="accordion-container" id="accordion">
+                                <div v-for="(groupOpt,index) in groupsOptions" :key="index" class="card card-option">
+                                    <div class="card-header" :id="'headingOne'+index" data-toggle="collapse" :data-target="'#collapseOne'+index" :aria-expanded="index == 0" :aria-controls="'collapseOne'+index">
+                                        <h5 class="mb-0 btn btn-link">
+                                            {{groupOpt.name}} 
+                                            <small v-if="groupOpt.selected" class="text-warning">  {{ groupOpt.selected.price }}$</small>
+                                        </h5>
+                                    </div>
+
+                                    <div :id="'collapseOne'+index" class="collapse" :class="{show:index == 0}" :aria-labelledby="'headingOne'+index" data-parent="#accordion">
+                                        <div class="card-body">
+                                            
+                                            <div class="form-group">
+                                                <div v-for="(itemOpt,indexOpt) in groupOpt.options" :key="indexOpt" class="form-check">
+                                                    <input class="form-check-input" type="radio" :name="'options'+index" :id="itemOpt.name+index" :value="itemOpt.id" v-on:click="groupOpt.selected=itemOpt">
+                                                    <label class="form-check-label" :for="itemOpt.name+index">
+                                                        {{itemOpt.name }} - {{ itemOpt.price }}$
+                                                    </label>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex options-resume">
+                                <div class="price d-flex align-items-center">
+                                    <h4 class="primary-color">{{priceResume}}</h4> <small v-if="serviceData.type =='hourly'">/hr</small> <span v-if="serviceData.discount" class="ps-2 ser-discount">{{serviceData.discount}}% {{__('messages.off')}}</span>
+                                </div>
+                                <div class="book-now-btn m-3">
+                                    <button class="btn btn-primary"><router-link class="text-white" :to="{name: 'book-service',params: { service_id: serviceData.id}}">{{__('messages.book_now')}}</router-link></button>
+                                </div>
+                            </div>
+
+                        </div>
+
                         <div v-if="serviceData.attchments.length >0" class="service-gallery service-top-space">
                             <div class="header-title-inner-page d-flex align-items-center justify-content-between">
                                 <h4 class="title">{{__('messages.gallery')}}</h4>
@@ -230,6 +269,7 @@ export default {
             provider:{},
             ratingData:{},
             relatedService:{},
+            groupsOptions:[],
             baseUrl:window.baseUrl
         }
     },
@@ -259,7 +299,27 @@ export default {
                 this.provider = response.data.provider;
                 this.ratingData = response.data.rating_data
                 this.relatedService = response.data.related_service
+                this.groupsOptions = response.data.groups_options
             });
+        }
+    },
+    computed:{
+        priceResume(){
+            let total = 0;
+            if(this.serviceData.price){
+                total +=this.serviceData.price;
+            }
+            if(this.groupsOptions.length==0){
+                return total;
+            }
+            this.groupsOptions.forEach(groupOpt => {
+                if(!groupOpt.selected){
+                    return;
+                }
+                total += groupOpt.selected.price;
+            });
+
+            return total.toString()+'$';
         }
     }
 }

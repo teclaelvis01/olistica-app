@@ -463,7 +463,7 @@ class BookingController extends Controller
         $auth_user = authSession();
         $user_id = $auth_user->id;
         $user_data = User::find($user_id);
-        $bookingdata = Booking::with('handymanAdded', 'payment', 'bookingExtraCharge')->myBooking()->find($id);
+        $bookingdata = Booking::with('handymanAdded', 'payment', 'bookingExtraCharge','bookingOptionsHistory')->myBooking()->find($id);
         switch ($tabpage) {
             case 'info':
                 $data  = view('booking.' . $tabpage, compact('user_data', 'tabpage', 'auth_user', 'bookingdata'))->render();

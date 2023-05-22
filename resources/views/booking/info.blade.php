@@ -135,6 +135,44 @@ $status = App\Models\BookingStatus::where('status',1)->orderBy('sequence','ASC')
             </ul>
             @endif
         </div>
+
+        @php
+        $totalOptionsPrice = 0;
+        @endphp
+
+        @if($bookingdata->bookingOptionsHistory->count() > 0 )
+        <div class="c1-light-bg radius-10 py-3 px-4 flex-grow-1">
+            <h4 class="mb-2">{{__('messages.options')}}</h4>
+            <ul class="list-group">
+                @foreach($bookingdata->bookingOptionsHistory as $history)
+                @php
+                $totalOptionsPrice += $history->price;
+                @endphp
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{$history->name ?? '-'}}
+                    <span class="text-warning">{{$history->price ?? '-'}}$</span>
+                    <small class="text-muted"> <a class="btn-link btn-link-hover" href="{{route('options.create', ['id' => $history->reference])}}" >reference:  {{$history->reference ?? '-'}}</a> </small>
+                </li>
+                @endforeach
+            </ul>
+            
+            @foreach([] as $history)
+            <h5 class="c1 mb-3">{{$history->name ?? '-'}}</h5>
+            <ul class="list-info">
+                <li>
+                    <span class="material-icons  customer-info-text">{{__('messages.price')}}</span>
+                    <a href="" class=" customer-info-value">
+                        <p class="mb-0">{{$history->price ?? '-'}}</p>
+                    </a>
+                </li>
+                <li>
+                    <span class="material-icons  customer-info-text">{{__('messages.reference')}}</span>
+                    <p  class=" customer-info-value">{{$history->reference ?? '-'}}</p>
+                </li>
+            </ul>
+            @endforeach
+        </div>
+        @endif
     </div>
     @if($bookingdata->bookingExtraCharge->count() > 0 )
     <h3 class="mb-3 mt-3">{{__('messages.extra_charge')}}</h3>
@@ -187,14 +225,14 @@ $status = App\Models\BookingStatus::where('status',1)->orderBy('sequence','ASC')
                             <a href="" class="booking-service-link fw-bold">{{optional($bookingdata->service)->name ?? '-'}}</a>
                         </div>
                     </td>
-                    <td>{{ isset($bookingdata->amount) ? getPriceFormat($bookingdata->amount) : 0 }}</td> 
+                    <td>{{ isset($bookingdata->amount) ? getPriceFormat($bookingdata->amount + $totalOptionsPrice) : 0 }}</td> 
                     <td>{{!empty($bookingdata->quantity) ? $bookingdata->quantity : 0}}</td>
                     <td>{{!empty($bookingdata->discount) ? $bookingdata->discount : 0}}%</td>
                     @php
                     if($bookingdata->service->type === 'fixed'){
-                    $sub_total = ($bookingdata->amount) * ($bookingdata->quantity);
+                    $sub_total = ($bookingdata->amount + $totalOptionsPrice) * ($bookingdata->quantity);
                     }else{
-                    $sub_total = $bookingdata->amount;
+                    $sub_total = $bookingdata->amount + $totalOptionsPrice;
                     }
                     @endphp
                     <td class="text-end">{{!empty($sub_total) ? getPriceFormat($sub_total) : 0}}</td>
@@ -232,7 +270,7 @@ $status = App\Models\BookingStatus::where('status',1)->orderBy('sequence','ASC')
                         <tr class="grand-sub-total">
                             <td>{{__('messages.subtotal_vat')}}</td>
                             @php
-                            $sub_total = $bookingdata->amount + $tax_amount;
+                            $sub_total = ($bookingdata->amount + $totalOptionsPrice) * ($bookingdata->quantity) + $tax_amount;
                             @endphp
                             <td class="bk-value">{{!empty($sub_total) ? getPriceFormat($sub_total) : 0}}</td>
                         </tr>

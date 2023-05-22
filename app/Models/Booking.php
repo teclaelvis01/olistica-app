@@ -218,6 +218,6 @@ class Booking extends Model
     }
     public function scopeList($query)
     {
-        return $query->orderBy('deleted_at', 'asc');
+        return $query->orderBy('created_at', 'desc');
     }
 }

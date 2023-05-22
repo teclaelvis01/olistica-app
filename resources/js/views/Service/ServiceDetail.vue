@@ -88,7 +88,7 @@
                                 <h4 class="primary-color">{{priceResume}}</h4> <small v-if="serviceData.type =='hourly'">/hr</small> <span v-if="serviceData.discount" class="ps-2 ser-discount">{{serviceData.discount}}% {{__('messages.off')}}</span>
                             </div>
                             <div class="book-now-btn m-3">
-                                <button class="btn btn-primary"><router-link class="text-white" :to="{name: 'book-service',params: { service_id: serviceData.id}}">{{__('messages.book_now')}}</router-link></button>
+                                <button class="btn btn-primary"><router-link class="text-white" :to="{name: 'book-service',params: { service_id: serviceData.id }, query:{options_groups: JSON.stringify(groupsOptions)}}">{{__('messages.book_now')}}</router-link></button>
                             </div>
                         </div>
 

@@ -561,4 +561,5 @@
   'enable_user_wallet' => 'Enable User Wallet',
   'option_groups' => 'Grupo de opciones',
   'options' => 'Opciones',
+  'new_price' => 'Nuevo precio',
 );

@@ -134,9 +134,16 @@
                                     <span class="text-secondary"><b>{{__('messages.price')}}</b></span>
                                     <span class="hightlight-text"> {{ serviceData.price_format }} </span>
                                 </div>
+                                <div class="bill-box" v-if="selectedOptions.length > 0">
+                                    <span class="text-secondary"><b>{{__('messages.options')}}</b></span>
+                                    <span class="hightlight-text"> 
+                                        <div v-for="(option_item,idx) in selectedOptions" :key="idx" > {{option_item.name}} <small class="text-warning">{{option_item.price}}$ </small></div>
+                                        <span class="hightlight-text">Nuevo precio: <small class="text-danger">{{ priceWithOptions }}$</small> </span>
+                                    </span>
+                                </div>
                                 <div class="bill-box">
                                     <span class="text-secondary"><b>{{__('messages.sub_total')}} </b></span>
-                                    <span><span class="hightlight-text">{{ serviceData.price_format }} * {{ booking.quantity }} = <span v-if="currencyPostion === 'left'">{{currencySymobl}}</span>{{ parseFloat(serviceData.price * booking.quantity).toFixed(2) }}</span><span v-if="currencyPostion === 'right'">{{currencySymobl}}</span></span>
+                                    <span><span class="hightlight-text">{{ priceWithOptions }} * {{ booking.quantity }} = <span v-if="currencyPostion === 'left'">{{currencySymobl}}</span>{{ subTotal }}</span><span v-if="currencyPostion === 'right'">{{currencySymobl}}</span></span>
                                 </div> 
                                 <div  class="bill-box">
                                     <span class="text-secondary"><b>{{__('messages.tax')}}</b></span>
@@ -243,6 +250,7 @@ export default {
     }, 
   data () {
     return {
+      queryParams:null,
       current: 1,
       serviceData:{},
       couponData:{},
@@ -261,12 +269,15 @@ export default {
         date:"",
       },
       discountprice:0.0,
-      submit:false
+      submit:false,
+      selectedOptions: [],
     }
   },
   mounted(){
     this.booking = this.defaultBookingRequest();
     this.payment = this.defaultPaymentRequest()
+    this.queryParams = this.$route.query;
+
     this.serviceDetail()
   },
   methods: {
@@ -286,7 +297,8 @@ export default {
           address: "",
           description: "",
           total_amount: this.serviceData.price,
-          tax:''
+          tax:'',
+          selected_options:null,
         };
     },
     defaultPaymentRequest: function () {
@@ -355,6 +367,7 @@ export default {
       } else {
         this.dataCalculation();
         this.booking.service_id = this.serviceData.id;
+        this.booking.selected_options = this.selectedOptions;
         this.booking.provider_id = this.serviceData.provider_id;
         this.booking.customer_id = this.$store.state.user != null ? this.$store.state.user.id : 0;
         this.booking.amount = this.serviceData.price;
@@ -410,19 +423,36 @@ export default {
         }else {
             totalAmount = (servicePrice * qty) - couponDiscountAmount + taxAmount;
         }
+        totalAmount += this.totalOptions;
         this.booking.total_amount = totalAmount
       
     },
     serviceDetail(){
-        post("service-detail", {
+        let dataBody = {
             service_id: this.$route.params.service_id,
-        })
+        };
+
+        let options_groups = this.queryParams.options_groups;
+
+        if(options_groups){
+            options_groups = JSON.parse(options_groups);
+            let optionsSelected = [];
+            options_groups.forEach(d=>{
+                if(!d.selected){
+                    return;
+                }
+                optionsSelected.push(d.selected);
+            })
+            dataBody['selected_options'] = optionsSelected;
+        }
+        post("service-detail", dataBody)
         .then((response) => {
             this.serviceData = response.data.service_detail;
             this.couponData = response.data.coupon_data;
             this.ratingData = response.data.rating_data
             this.relatedService = response.data.related_service
             this.taxes = response.data.taxes
+            this.selectedOptions = response.data.selected_options ?? [];
             this.dataCalculation()
 
         });
@@ -433,6 +463,22 @@ export default {
     }
   },
   computed: {
+    totalOptions(){
+        let total = 0;
+        this.selectedOptions.forEach(e=>{
+            total += e.price;
+        });
+        return total;
+    },
+    priceWithOptions(){
+        return this.serviceData.price + this.totalOptions
+    },
+    subTotal(){
+        let total = 0;
+        let newPrice = this.serviceData.price + this.totalOptions;
+        total += parseFloat( newPrice * this.booking.quantity).toFixed(2);
+        return total;
+    },
     ...mapGetters(['currencySymobl','discountType','currencyPostion']),
   },
 }

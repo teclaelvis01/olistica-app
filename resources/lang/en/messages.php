@@ -557,4 +557,5 @@
   'enable_user_wallet' => 'Enable User Wallet',
   'option_groups' => 'Options groups',
   'options' => 'Options',
+  'new_price' => 'New price',
 );

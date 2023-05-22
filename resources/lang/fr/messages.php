@@ -567,5 +567,6 @@ return [
   'enable_user_wallet' => 'Enable User Wallet',
   'groups_options' => 'Options groups',
   'options' => 'Options',
+  'new_price' => 'New price',
 
 ];

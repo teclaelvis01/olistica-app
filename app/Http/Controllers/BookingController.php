@@ -90,8 +90,19 @@ class BookingController extends Controller
                 $data['coupon_id'] = $coupons->id;
             }
         }
-                                                                        
+                    
+        /**
+         * @var Booking
+         */
         $result = Booking::updateOrCreate(['id' => $request->id], $data);
+
+        if($request->has('selected_options')){
+            $result->updateOrCreateOptionHistory($request->selected_options);
+        }
+        
+
+
+        // $request->selected_options;
        
         $activity_data = [
             'activity_type' => 'add_booking',

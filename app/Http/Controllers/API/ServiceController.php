@@ -18,6 +18,7 @@ use App\Http\Resources\API\CouponResource;
 use App\Http\Resources\API\GroupsServiceResource;
 use App\Http\Resources\API\UserFavouriteResource;
 use App\Http\Resources\API\ProviderTaxResource;
+use App\Models\Options;
 use App\Models\ProviderServiceAddressMapping;
 use App\Models\ProviderTaxMapping;
 class ServiceController extends Controller
@@ -182,6 +183,18 @@ class ServiceController extends Controller
         $tax = ProviderTaxMapping::with('taxes')->where('provider_id',$service->provider_id)->get();
         $taxes = ProviderTaxResource::collection($tax);
         $servicefaq =  ServiceFaq::where('service_id',$id)->get();
+
+        $selected_options = [];
+        if($request->selected_options){
+            foreach ($request->selected_options as $key => $value) {
+                $option = Options::find($value['id']);
+                if(!$option){
+                    continue;
+                }
+                $selected_options[] = $option;
+            }
+
+        }
         
         $response = [
             'service_detail'    => $service_detail,
@@ -191,6 +204,7 @@ class ServiceController extends Controller
             'coupon_data'       => $coupon_data,
             'taxes'             => $taxes,
             'groups_options'    => $groups_options,
+            'selected_options'  => $selected_options,
             'related_service'   => $related_service,
             'service_faq'        => $servicefaq
         ];

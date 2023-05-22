@@ -21,6 +21,6 @@
         <div id="app">
             <Default></Default>
         </div>
-        <script src="{{ asset('js/frontend.min.js') }}?v=1" defer></script>
+        <script src="{{ asset('js/frontend.min.js') }}?v=2" defer></script>
     </body>
 </html>

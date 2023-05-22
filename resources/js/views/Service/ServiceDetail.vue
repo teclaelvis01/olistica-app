@@ -308,7 +308,7 @@ export default {
                 total +=this.serviceData.price;
             }
             if(this.groupsOptions.length==0){
-                return total;
+                return total.toString()+'$';
             }
             this.groupsOptions.forEach(groupOpt => {
                 if(!groupOpt.selected){

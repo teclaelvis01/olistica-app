@@ -14,9 +14,11 @@ class Options extends Model
         'name',
         'price'
     ];
+    protected $hidden = ['deleted_at','created_at','updated_at'];
 
     protected static function boot()
     {
+        
         parent::boot();
         static::deleted(function ($row) {
             $row->optionsAdded()->delete();

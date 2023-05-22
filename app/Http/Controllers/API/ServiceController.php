@@ -15,6 +15,7 @@ use App\Http\Resources\API\UserResource;
 use App\Http\Resources\API\ServiceDetailResource;
 use App\Http\Resources\API\BookingRatingResource;
 use App\Http\Resources\API\CouponResource;
+use App\Http\Resources\API\GroupsServiceResource;
 use App\Http\Resources\API\UserFavouriteResource;
 use App\Http\Resources\API\ProviderTaxResource;
 use App\Models\ProviderServiceAddressMapping;
@@ -132,13 +133,13 @@ class ServiceController extends Controller
        
         if(auth()->user() !== null){
             if(auth()->user()->hasRole('admin')){
-                $service = Service::withTrashed()->with('providers','category','serviceRating')->findorfail($id);
+                $service = Service::withTrashed()->with('providers','category','serviceRating','optionGroupsGroups')->findorfail($id);
             }
             else{
-                $service = Service::with('providers','category','serviceRating')->findorfail($id);
+                $service = Service::with('providers','category','serviceRating','optionGroupsGroups')->findorfail($id);
             }
         }else{
-            $service = Service::with('providers','category','serviceRating')->findorfail($id);
+            $service = Service::with('providers','category','serviceRating','optionGroupsGroups')->findorfail($id);
         }
         if(empty($service)){
             $message = __('messages.record_not_found');
@@ -158,6 +159,7 @@ class ServiceController extends Controller
         }
         $related = $related->get();
         $related_service = ServiceResource::collection($related);
+        $groups_options = GroupsServiceResource::collection(optional($service->optionGroupsGroups));
 
         $rating_data = BookingRatingResource::collection($service_detail->serviceRating->take(5));
                 
@@ -180,6 +182,7 @@ class ServiceController extends Controller
         $tax = ProviderTaxMapping::with('taxes')->where('provider_id',$service->provider_id)->get();
         $taxes = ProviderTaxResource::collection($tax);
         $servicefaq =  ServiceFaq::where('service_id',$id)->get();
+        
         $response = [
             'service_detail'    => $service_detail,
             'provider'          => new UserResource(optional($service->providers)),
@@ -187,6 +190,7 @@ class ServiceController extends Controller
             'customer_review'   => $customer_reviews,
             'coupon_data'       => $coupon_data,
             'taxes'             => $taxes,
+            'groups_options'    => $groups_options,
             'related_service'   => $related_service,
             'service_faq'        => $servicefaq
         ];

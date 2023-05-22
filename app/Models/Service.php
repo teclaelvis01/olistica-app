@@ -82,6 +82,15 @@ class Service extends Model implements HasMedia
     {
         return $this->hasMany(OptionGroupsService::class, 'service_id', 'id');
     }
+    /**
+     * Undocumented function
+     *
+     * @return OptionGroups
+     */
+    public function optionGroupsGroups()
+    {
+        return $this->belongsToMany(OptionGroups::class,'option_groups_services','service_id','option_groups_id');
+    }
 
     protected static function boot()
     {

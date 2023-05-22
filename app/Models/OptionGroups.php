@@ -37,13 +37,6 @@ class OptionGroups extends Model
 
 
     public function options(){
-        return $this->belongsToMany(Options::class,'option_groups_options')->withTrashed();
+        return $this->belongsToMany(Options::class,'option_groups_options');
     }
-    // public function services(){
-    //     return $this->hasMany(Service::class, 'subcategory_id','id');
-    // }
-    // public function scopeList($query)
-    // {
-    //     return $query->orderBy('deleted_at', 'asc');
-    // }
 }

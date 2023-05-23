@@ -22,7 +22,7 @@ window._ = require('lodash');
     require('quill');
     require('bootstrap-validator');
     window.moment = require('moment');
-    window.moment.locale('ru');
+    window.moment.locale('es');
     window.choice=require('choices.js/public/assets/scripts/choices.min.js');
 window.axios = require('axios');
 

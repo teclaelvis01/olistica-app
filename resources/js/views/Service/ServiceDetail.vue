@@ -229,7 +229,7 @@
         </div>
     </div>
      <div class="service-book-now">
-        <router-link :to="{name:'book-service'}" class="btn btn-primary rounded"> {{__('messages.book_now')}} </router-link>
+        <router-link :to="{name:'book-service',params: { service_id: serviceData.id }, query:{options_groups: JSON.stringify(groupsOptions)}}" class="btn btn-primary rounded"> {{__('messages.book_now')}} </router-link>
     </div>
     <b-modal id="reviewedit" modal-class="modal fade" title="Review" header-close-content=" <button type='button' class='btn-close btn-sm' data-bs-dismiss='modal' aria-label='Close'></button>">
         <form class="review-form">
